@@ -13,7 +13,8 @@
         "test": "jest",
         "lint": "eslint src --max-warnings 287",
         "scan-translations": "pnpx jest ./tests/i18nScan.test.js",
-        "android:apk": "node tools/gerar-apk.js"
+        "android:apk": "node tools/gerar-apk.js",
+        "android:aab": "node tools/gerar-aab.js"
     },
     "engines": {
         "node": ">=22",

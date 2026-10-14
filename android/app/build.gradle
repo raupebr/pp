@@ -1,5 +1,11 @@
 apply plugin: 'com.android.application'
 
+// PP: a versão do app Android vem do package.json (1.2.3 vira versionName "1.2.3" e versionCode 10203),
+// assim cada versão nova enviada à Play Store tem um número maior que a anterior
+def ppVersion = new groovy.json.JsonSlurper().parse(file('../../package.json')).version
+def ppVersionParts = (ppVersion.tokenize('.-').take(3).collect { it.isInteger() ? it.toInteger() : 0 } + [0, 0, 0]).take(3)
+def ppVersionCode = ppVersionParts[0] * 10000 + ppVersionParts[1] * 100 + ppVersionParts[2]
+
 android {
     namespace = "com.pp.novo"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -7,8 +13,8 @@ android {
         applicationId "com.pp.novo"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode ppVersionCode
+        versionName ppVersion
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.

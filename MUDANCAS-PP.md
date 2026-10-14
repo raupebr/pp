@@ -108,3 +108,10 @@ Nos arquivos de código, os trechos alterados estão marcados com comentários `
 - Saíram do repositório os arquivos do projeto original que não valem para o PP: fluxos e modelos do
   GitHub (`.github`), associação de app da Apple (`.well-known`), código de conduta e guia de
   contribuição. `Dockerfile` com o nome do PP.
+
+## 14/10/2026: versão para a Play Store
+
+- `tools/gerar-aab.js` (`npx pnpm@11.8.0 run android:aab`) gera o `PP.aab` de lançamento e o assina com a
+  chave de envio, guardada fora do projeto; na primeira vez cria a chave. A senha é digitada no terminal.
+- `android/app/build.gradle`: a versão do app Android vem do `package.json` (1.0.0 → versionCode 10000).
+- `.gitignore`: o `PP.aab` e arquivos de chave (`*.jks`, `*.keystore`) nunca vão para o repositório.

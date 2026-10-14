@@ -46,6 +46,18 @@ Gera o `PP.apk` na pasta do projeto. Para instalar num aparelho ligado na USB (c
 adb install -r PP.apk
 ```
 
+### Versão para a Play Store (AAB)
+
+```bash
+npx pnpm@11.8.0 run android:aab
+```
+
+Gera o `PP.aab` assinado com a chave de envio, que fica fora do projeto
+(`%USERPROFILE%\PP-chave-assinatura\pp-upload.jks`, ou o caminho em `PP_KEYSTORE`). Na primeira vez o
+comando cria a chave e pede uma senha; depois só pede a senha. Rode num terminal, porque a senha é digitada
+nele. A versão do app (`versionName` e `versionCode`) vem do `version` do `package.json`: aumente-a a cada
+envio.
+
 ## Ferramentas do PP
 
 | Arquivo | Para que serve |

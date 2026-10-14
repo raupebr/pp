@@ -8,3 +8,7 @@
 /.claude
 /prints
 /PP.apk
+/PP.aab
+# PP: chave de assinatura do app nunca vai para o repositório
+*.jks
+*.keystore
