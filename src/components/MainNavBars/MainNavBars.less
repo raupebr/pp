@@ -1,0 +1,59 @@
+// Copyright (C) 2017-2024 Smart code 203358507
+
+@import (reference) '~stremio/common/screen-sizes.less';
+
+.main-nav-bars-container {
+    position: relative;
+    z-index: 0;
+    overflow: clip;
+    margin-left: var(--safe-area-inset-left);
+    margin-right: var(--safe-area-inset-right);
+    width: calc(100% - var(--safe-area-inset-left) - var(--safe-area-inset-right));
+    height: calc(100% - var(--safe-area-inset-bottom));
+
+    .horizontal-nav-bar {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1;
+    }
+
+    // PP: a barra lateral flutua (altura do conteúdo dela), um pouco abaixo da barra de cima
+    .vertical-nav-bar {
+        position: absolute;
+        top: calc(var(--horizontal-nav-bar-size) + var(--safe-area-inset-top) + 0.25rem);
+        bottom: auto;
+        left: 0;
+        z-index: 1;
+        max-height: calc(100% - var(--horizontal-nav-bar-size) - var(--safe-area-inset-top) - 1.25rem);
+    }
+
+    .nav-content-container {
+        position: absolute;
+        top: calc(var(--horizontal-nav-bar-size) + var(--safe-area-inset-top));
+        right: 0;
+        bottom: 0;
+        left: var(--vertical-nav-bar-size);
+        z-index: 0;
+    }
+}
+
+@media only screen and (max-width: @minimum) {
+    .main-nav-bars-container {
+        // PP: o conteúdo vai até embaixo e passa por trás da barra de abas de vidro
+        .nav-content-container {
+            --pp-nav-bottom-space: var(--vertical-nav-bar-size);
+            left: 0;
+            bottom: 0;
+        }
+
+        // PP: barra de abas flutuando acima da borda de baixo
+        .vertical-nav-bar {
+            top: initial;
+            bottom: 0.75rem;
+            right: 0;
+            max-height: none;
+        }
+    }
+}

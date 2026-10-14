@@ -1,0 +1,124 @@
+// Copyright (C) 2017-2023 Smart code 203358507
+
+@import (reference) '~@stremio/stremio-colors/less/stremio-colors.less';
+@import (reference) '~stremio/common/screen-sizes.less';
+@import (reference) '~stremio/common/glass.less';
+
+:import('~stremio/components/Popup/styles.less') {
+    popup-menu-container: menu-container;
+}
+
+@mobile-height: calc(var(--small-viewport-height) - var(--horizontal-nav-bar-size) - var(--vertical-nav-bar-size));
+@height: calc(var(--small-viewport-height) - var(--horizontal-nav-bar-size));
+
+.nav-menu-popup-label {
+    .popup-menu-container {
+        margin-top: 0.75rem;
+        border-radius: 1.75rem;
+    }
+}
+.nav-menu-container {
+    width: 20rem;
+    max-height: calc(@height - 1rem);
+    padding: 0.5rem;
+    overflow-y: auto;
+    // PP: menu de vidro (sem conta: só tela cheia, configurações, addons e abrir link)
+    border-radius: 1.75rem;
+
+    // PP: conta Stremio no topo do menu
+    .user-info-container {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem;
+
+        .avatar-container {
+            flex: none;
+            height: 3.5rem;
+            width: 3.5rem;
+            border-radius: 50%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: var(--primary-foreground-color);
+            box-shadow: 0 0 0 2px var(--primary-accent-color);
+        }
+
+        .user-info-details {
+            flex: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-left: 1rem;
+
+            .email-label {
+                color: var(--primary-foreground-color);
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+
+            .logout-button-container {
+                align-self: flex-start;
+                padding: 0.4rem 0.9rem;
+                border-radius: 2rem;
+                .pp-glass-accent();
+
+                .logout-label {
+                    font-size: 0.85rem;
+                    font-weight: 600;
+                    color: #ffffff;
+                }
+
+                &:hover, &:focus-visible {
+                    filter: brightness(1.12);
+                }
+            }
+        }
+    }
+
+    .nav-menu-section {
+        border-top: thin solid rgba(255, 255, 255, 0.08);
+        margin-top: 0.4rem;
+        padding-top: 0.4rem;
+
+        &:not(:first-child) {
+            margin-top: 0.4rem;
+            padding-top: 0.4rem;
+            border-top: thin solid rgba(255, 255, 255, 0.08);
+        }
+
+        .nav-menu-option-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            height: 3.5rem;
+            padding: 0 1rem;
+            border-radius: 1.25rem;
+
+            &:hover, &:focus-visible {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+
+            .icon {
+                flex: none;
+                width: 2rem;
+                height: 2rem;
+                margin-right: 1rem;
+                color: var(--primary-accent-color);
+                opacity: 1;
+            }
+
+            .nav-menu-option-label {
+                flex: 1;
+                color: var(--primary-foreground-color);
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: @minimum) {
+    .nav-menu-container {
+        max-height: calc(@mobile-height - 1rem);
+    }
+}

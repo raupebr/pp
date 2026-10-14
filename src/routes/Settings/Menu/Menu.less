@@ -1,0 +1,62 @@
+@import (reference) '~stremio/common/screen-sizes.less';
+@import (reference) '~stremio/common/glass.less';
+
+.menu {
+    flex: none;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    width: 18rem;
+    padding: 3rem 1.5rem;
+
+    .button {
+        flex: none;
+        align-self: stretch;
+        display: flex;
+        align-items: center;
+        height: 4rem;
+        border-radius: 4rem;
+        padding: 2rem;
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: var(--primary-foreground-color);
+        opacity: 0.4;
+
+        // PP: item selecionado em pílula de vidro com a cor de destaque
+        &.selected {
+            font-weight: 600;
+            color: #ffffff;
+            opacity: 1;
+            .pp-glass-accent();
+        }
+
+        &:hover:not(.selected) {
+            background-color: var(--overlay-color);
+        }
+    }
+
+    .spacing {
+        flex: 1;
+    }
+
+    .version-info-label {
+        flex: 0 1 auto;
+        margin: 0.5rem 0;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        opacity: 0.3;
+    }
+}
+
+@media only screen and (max-width: @xsmall) {
+    .menu {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: @minimum) {
+    .menu {
+        display: none;
+    }
+}

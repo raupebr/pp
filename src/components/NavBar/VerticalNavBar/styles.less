@@ -1,0 +1,74 @@
+// Copyright (C) 2017-2023 Smart code 203358507
+
+@import (reference) '~@stremio/stremio-colors/less/stremio-colors.less';
+@import (reference) '~stremio/common/screen-sizes.less';
+@import (reference) '~stremio/common/glass.less';
+
+// PP: barra lateral flutuante de vidro (computador e TV)
+.vertical-nav-bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    width: calc(var(--vertical-nav-bar-size) - 1.5rem);
+    max-height: 100%;
+    margin-left: 0.75rem;
+    padding: 0.55rem 0;
+    border-radius: 2rem;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    .pp-glass();
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    .nav-tab-button {
+        flex: none;
+        width: calc(var(--vertical-nav-bar-size) - 2.6rem);
+        height: calc(var(--vertical-nav-bar-size) - 2.6rem);
+    }
+}
+
+// PP: barra de abas de vidro flutuando embaixo (celular)
+@media only screen and (max-width: @minimum) {
+    .vertical-nav-bar-container {
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 0.25rem;
+        height: calc(var(--vertical-nav-bar-size) - 1.75rem);
+        width: auto;
+        max-height: none;
+        margin: 0 0.75rem;
+        padding: 0 0.4rem;
+        border-radius: 2.5rem;
+        overflow-y: hidden;
+        overflow-x: auto;
+
+        .nav-tab-button {
+            flex: 1 1 0;
+            min-width: 3rem;
+            width: auto;
+            height: calc(var(--vertical-nav-bar-size) - 2.75rem);
+
+            &:global(.selected) {
+                flex-grow: 1.7;
+            }
+
+            &:last-child {
+                display: none;
+            }
+        }
+    }
+}
+
+@media only screen and (max-height: @minimum) {
+    .vertical-nav-bar-container {
+        .nav-tab-button {
+            &:last-child {
+                display: none;
+            }
+        }
+    }
+}

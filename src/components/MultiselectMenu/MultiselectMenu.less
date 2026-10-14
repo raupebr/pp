@@ -1,0 +1,29 @@
+// Copyright (C) 2017-2024 Smart code 203358507
+
+@import (reference) '~stremio/common/glass.less';
+
+@border-radius: 2.75rem;
+
+.multiselect-menu {
+    position: relative;
+    min-width: 8.5rem;
+    overflow: visible;
+    border-radius: @border-radius;
+    // PP: seletor em pílula de vidro
+    .pp-glass-soft();
+
+    &:hover,
+    &.active {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+}
+
+.menu-popup {
+    min-width: 11rem;
+
+    > [role='listbox'] {
+        position: static;
+        max-height: none;
+        box-shadow: none;
+    }
+}

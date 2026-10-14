@@ -1,0 +1,252 @@
+// PP: destaque da tela inicial
+
+@import (reference) '~stremio/common/screen-sizes.less';
+@import (reference) '~stremio/common/glass.less';
+
+.hero {
+    position: relative;
+    z-index: 0;
+    height: clamp(19rem, 46vh, 32rem);
+    margin: 0.5rem 1rem 1rem;
+    border-radius: 2rem;
+    background-color: var(--overlay-color);
+    box-shadow: var(--glass-edge), 0 24px 60px -24px rgba(0, 0, 0, 0.8);
+    // arrastar para o lado troca o título; para cima/baixo continua rolando a página
+    touch-action: pan-y;
+    user-select: none;
+
+    // trilho com as imagens lado a lado; anda para o lado ao trocar ou ao arrastar
+    .track {
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+        display: flex;
+        flex-direction: row;
+        overflow: visible;
+        transition: transform 0.55s cubic-bezier(0.22, 0.61, 0.36, 1);
+        will-change: transform;
+
+        .backdrop {
+            flex: 0 0 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center 25%;
+            transform: scale(1.04);
+            transition: transform 9s linear;
+
+            &.active {
+                transform: scale(1);
+            }
+        }
+    }
+
+    &.dragging {
+        cursor: grabbing;
+
+        .track {
+            transition: none;
+        }
+    }
+
+
+    .shade {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background:
+            linear-gradient(90deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 45%, rgba(0, 0, 0, 0) 72%),
+            linear-gradient(0deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 50%);
+    }
+
+    .info {
+        position: absolute;
+        left: 1.5rem;
+        bottom: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        max-width: min(34rem, 55%);
+        padding: 1.5rem 1.6rem;
+        border-radius: 1.75rem;
+        animation: hero-info-in 0.6s ease-out;
+        .pp-glass();
+
+        .logo {
+            align-self: flex-start;
+            max-width: 17rem;
+            max-height: 5rem;
+            object-fit: contain;
+            object-position: left center;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+        }
+
+        .title {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.15;
+            color: var(--primary-foreground-color);
+        }
+
+        .meta {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.4rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-foreground-color);
+            opacity: 0.85;
+
+            .rating {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.4rem;
+
+                .imdb {
+                    width: 2.4rem;
+                    height: 1.2rem;
+                    color: var(--color-imdb);
+                }
+            }
+        }
+
+        .description {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            font-size: 0.95rem;
+            line-height: 1.45;
+            color: var(--primary-foreground-color);
+            opacity: 0.85;
+        }
+
+        .watch-button {
+            align-self: flex-start;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            height: 3.25rem;
+            margin-top: 0.2rem;
+            padding: 0 1.6rem;
+            border-radius: 3rem;
+            transition: filter 0.15s ease-out, transform 0.15s ease-out;
+            .pp-glass-accent();
+
+            &:hover, &:focus-visible {
+                filter: brightness(1.12);
+                transform: translateY(-1px);
+            }
+
+            &:focus-visible {
+                outline: var(--focus-outline-size) solid var(--primary-foreground-color);
+                outline-offset: 3px;
+            }
+
+            .icon {
+                width: 1.2rem;
+                height: 1.2rem;
+                color: #ffffff;
+            }
+
+            .label {
+                font-weight: 700;
+                color: #ffffff;
+            }
+        }
+    }
+
+    .dots {
+        position: absolute;
+        right: 1.5rem;
+        bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.3rem;
+        border-radius: 2rem;
+        .pp-glass();
+
+        // setas para trocar de título (no celular também dá para arrastar)
+        .arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.1rem;
+            height: 2.1rem;
+            border-radius: 50%;
+            transition: background-color 0.2s ease-out;
+
+            &:hover, &:focus-visible {
+                background-color: rgba(255, 255, 255, 0.18);
+            }
+
+            .icon {
+                width: 1.1rem;
+                height: 1.1rem;
+                color: #ffffff;
+            }
+        }
+
+        .dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 1rem;
+            background-color: rgba(255, 255, 255, 0.45);
+            transition: width 0.3s ease, background-color 0.3s ease;
+
+            &.active {
+                width: 1.5rem;
+                background-color: #ffffff;
+            }
+        }
+    }
+}
+
+@keyframes hero-info-in {
+    from {
+        opacity: 0;
+        transform: translateY(0.75rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@media only screen and (max-width: @minimum) {
+    .hero {
+        height: 27rem;
+        margin: 0.25rem 0.75rem 0.75rem;
+        border-radius: 1.75rem;
+
+        .shade {
+            background: linear-gradient(0deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.2) 60%, rgba(0, 0, 0, 0) 100%);
+        }
+
+        .info {
+            left: 0.75rem;
+            right: 0.75rem;
+            bottom: 0.75rem;
+            max-width: none;
+            padding: 1.1rem 1.2rem;
+            border-radius: 1.4rem;
+
+            .logo {
+                max-width: 13rem;
+                max-height: 4rem;
+            }
+
+            .description {
+                -webkit-line-clamp: 2;
+                font-size: 0.9rem;
+            }
+        }
+
+        .dots {
+            top: 0.75rem;
+            right: 0.75rem;
+            bottom: auto;
+        }
+    }
+}

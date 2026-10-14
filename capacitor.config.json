@@ -1,0 +1,13 @@
+{
+    "appId": "com.pp.novo",
+    "appName": "PP",
+    "webDir": "build",
+    "backgroundColor": "#050a1a",
+    "server": {
+        "androidScheme": "http",
+        "cleartext": true
+    },
+    "android": {
+        "allowMixedContent": true
+    }
+}

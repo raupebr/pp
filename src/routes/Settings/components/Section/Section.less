@@ -1,0 +1,33 @@
+@import (reference) '~stremio/common/screen-sizes.less';
+@import (reference) '~stremio/common/glass.less';
+
+// PP: cada seção das configurações é um cartão de vidro
+.section {
+    position: relative;
+    max-width: 40rem;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin: 1.5rem 0;
+    padding: 2rem 2rem 1rem;
+    border-radius: 2rem;
+    overflow: visible;
+    .pp-glass-soft();
+
+    .label {
+        flex: none;
+        align-self: stretch;
+        font-size: 1.6rem;
+        font-weight: 600;
+        line-height: 2.6rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
+@media only screen and (max-width: @minimum) {
+    .section {
+        margin: 1rem 0;
+        padding: 1.5rem 1.25rem 0.75rem;
+        border-radius: 1.5rem;
+    }
+}

@@ -1,0 +1,10 @@
+/node_modules
+/build
+/yarn.lock
+/npm-debug.log
+.DS_Store
+.prettierignore
+# PP: configuração local da pré-visualização
+/.claude
+/prints
+/PP.apk

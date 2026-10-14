@@ -1,0 +1,169 @@
+// PP: Configurações > Aparência
+
+@import (reference) '~stremio/common/glass.less';
+
+.group {
+    width: 100%;
+    margin-bottom: 2rem;
+    overflow: visible;
+
+    .heading {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--primary-foreground-color);
+    }
+}
+
+.hint {
+    margin-top: 0.35rem;
+    font-size: 0.9rem;
+    line-height: 1.35;
+    color: var(--primary-foreground-color);
+    opacity: 0.55;
+}
+
+.glass-hint {
+    margin-top: -1.25rem;
+    margin-bottom: 2rem;
+}
+
+.swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    margin-top: 1.1rem;
+    padding: 0.3rem;
+    overflow: visible;
+
+    .swatch {
+        --swatch-color: transparent;
+        position: relative;
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 3.25rem;
+        height: 3.25rem;
+        border-radius: 50%;
+        background-color: var(--swatch-color);
+        // brilho de vidro por cima da cor
+        background-image: linear-gradient(160deg, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.08) 45%, rgba(255, 255, 255, 0) 55%, rgba(0, 0, 0, 0.12) 100%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), inset 0 0 0 1px rgba(255, 255, 255, 0.15), 0 6px 16px -6px rgba(0, 0, 0, 0.6);
+        cursor: pointer;
+        transition: transform 0.15s ease-out;
+        overflow: visible;
+
+        &:hover, &:focus-visible, &:focus-within {
+            transform: scale(1.08);
+        }
+
+        &.selected {
+            outline: 3px solid var(--primary-foreground-color);
+            outline-offset: 3px;
+        }
+
+        .icon {
+            width: 1.4rem;
+            height: 1.4rem;
+            color: #ffffff;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+            pointer-events: none;
+        }
+
+        &.custom {
+            &:not(.selected) {
+                background-color: transparent;
+                background-image: conic-gradient(from 0deg, #ff5f6d, #ffc371, #f9f871, #4ade80, #22d3ee, #6366f1, #d946ef, #ff5f6d);
+            }
+
+            .color-input {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.backgrounds {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.9rem;
+    width: 100%;
+    margin-top: 1.1rem;
+    padding: 0.3rem;
+    overflow: visible;
+
+    .background {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        padding: 0.5rem;
+        border-radius: 1.25rem;
+        transition: background-color 0.15s ease-out;
+        overflow: visible;
+        .pp-glass-soft();
+
+        &:hover, &:focus-visible {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        &.selected {
+            outline: 3px solid var(--primary-accent-color);
+            outline-offset: 2px;
+        }
+
+        .preview {
+            height: 4.5rem;
+            border-radius: 0.85rem;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+
+            &.preview-aurora {
+                background:
+                    ~"radial-gradient(ellipse 80% 70% at 10% 0%, hsla(calc(var(--pp-h) + 15), calc(var(--pp-s) * 75%), 34%, 0.9) 0%, transparent 70%)",
+                    ~"radial-gradient(ellipse 70% 70% at 100% 100%, hsla(calc(var(--pp-h) + 55), calc(var(--pp-s) * 65%), 28%, 0.8) 0%, transparent 70%)",
+                    ~"hsla(var(--pp-h), calc(var(--pp-s) * 35%), 6%, 1)";
+            }
+
+            &.preview-escuro {
+                background: linear-gradient(41deg, var(--primary-background-color) 0%, var(--secondary-background-color) 100%);
+            }
+
+            &.preview-preto {
+                background: #000000;
+            }
+        }
+
+        .label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-align: center;
+            color: var(--primary-foreground-color);
+        }
+    }
+}
+
+.reset {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    height: 3rem;
+    padding: 0 1.25rem;
+    border-radius: 3rem;
+    font-weight: 600;
+    color: var(--primary-foreground-color);
+    .pp-glass-soft();
+
+    &:hover, &:focus-visible {
+        background-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .icon {
+        width: 1.2rem;
+        height: 1.2rem;
+        opacity: 0.8;
+    }
+}
