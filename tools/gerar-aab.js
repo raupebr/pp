@@ -1,5 +1,6 @@
 // PP: gera o PP.aab assinado, o arquivo que vai para a Play Store.
 // Uso, num terminal (ele pede a senha da chave): npx pnpm@11.8.0 run android:aab
+// Só assinar de novo o último .aab gerado: node tools/gerar-aab.js --so-assinar
 // Precisa do Android Studio instalado (Java e SDK do Android).
 //
 // A chave de envio (upload key) fica FORA do projeto, para nunca ir para o GitHub:
@@ -38,15 +39,23 @@ const ask = (file, args) => {
     execFileSync(file, args, { stdio: 'inherit', env });
 };
 
-// 1. Versão final do app, sem service worker (os arquivos já vão dentro do app)
-run('npx pnpm@11.8.0 run build', { env: { SERVICE_WORKER_DISABLED: 'true', PP_BUILD_WORKERS: '2' } });
-// 2. Copia para o projeto Android
-run('npx cap sync android');
-// 3. Gera o .aab de lançamento (ainda sem assinatura)
-run(`"${path.join(ANDROID, isWindows ? 'gradlew.bat' : 'gradlew')}" bundleRelease`, { cwd: ANDROID });
-
 const output = path.join(ROOT, 'PP.aab');
-fs.copyFileSync(path.join(ANDROID, 'app', 'build', 'outputs', 'bundle', 'release', 'app-release.aab'), output);
+const bundle = path.join(ANDROID, 'app', 'build', 'outputs', 'bundle', 'release', 'app-release.aab');
+
+// Com --so-assinar, pula a geração e só assina o .aab já gerado (por exemplo, se a senha falhou)
+if (process.argv.includes('--so-assinar') && fs.existsSync(bundle)) {
+    console.log('\nUsando o .aab já gerado (sem gerar de novo).');
+} else {
+    // 1. Versão final do app, sem service worker (os arquivos já vão dentro do app)
+    run('npx pnpm@11.8.0 run build', { env: { SERVICE_WORKER_DISABLED: 'true', PP_BUILD_WORKERS: '2' } });
+    // 2. Copia para o projeto Android
+    run('npx cap sync android');
+    // 3. Gera o .aab de lançamento (ainda sem assinatura)
+    run(`"${path.join(ANDROID, isWindows ? 'gradlew.bat' : 'gradlew')}" bundleRelease`, { cwd: ANDROID });
+}
+
+// Sempre parte do .aab sem assinatura, para uma tentativa que falhou não atrapalhar a próxima
+fs.copyFileSync(bundle, output);
 
 // 4. Cria a chave de envio na primeira vez
 if (!fs.existsSync(KEYSTORE)) {
@@ -65,7 +74,8 @@ if (!fs.existsSync(KEYSTORE)) {
 }
 
 // 5. Assina o .aab com a chave de envio
-console.log('\nAssinando o PP.aab. Digite a senha da chave de envio (ela não aparece enquanto você digita).\n');
+console.log('\nAssinando o PP.aab. Quando aparecer "Enter Passphrase for keystore", digite ou cole a senha da chave');
+console.log('de envio e aperte Enter (ela não aparece na tela).\n');
 ask(javaTool('jarsigner'), [
     '-keystore', KEYSTORE,
     '-sigalg', 'SHA256withRSA',
