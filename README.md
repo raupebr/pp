@@ -64,6 +64,7 @@ envio.
 |---|---|
 | `tools/gerar-cores.js` | Gera a paleta de cores personalizáveis (`src/common/pp-colors.less`). Rode de novo se atualizar o `@stremio/stremio-colors`. |
 | `src/common/ppLogo.js` | Desenho da logo (SVG), nas cores do tema. |
+| `tools/gerar-loja.js` | Gera as imagens da Play Store na pasta `loja/`: ícone arco-íris, imagem de destaque e prints do app com títulos de exemplo inventados. Precisa do build e do `sharp` e do `puppeteer-core` (como o `gerar-icones.js`). |
 | `tools/gerar-icones.js` | Gera ícones, favicon e telas de abertura a partir da logo, na cor padrão (azul). Precisa do `sharp`: `npm i --prefix %TEMP%\pp-sharp sharp` e depois `set NODE_PATH=%TEMP%\pp-sharp\node_modules` antes de rodar. |
 
 ## Licença

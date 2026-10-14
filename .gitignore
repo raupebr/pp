@@ -9,6 +9,7 @@
 /prints
 /PP.apk
 /PP.aab
+/loja
 # PP: chave de assinatura do app nunca vai para o repositório
 *.jks
 *.keystore

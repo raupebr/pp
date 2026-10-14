@@ -115,3 +115,6 @@ Nos arquivos de código, os trechos alterados estão marcados com comentários `
   chave de envio, guardada fora do projeto; na primeira vez cria a chave. A senha é digitada no terminal.
 - `android/app/build.gradle`: a versão do app Android vem do `package.json` (1.0.0 → versionCode 10000).
 - `.gitignore`: o `PP.aab` e arquivos de chave (`*.jks`, `*.keystore`) nunca vão para o repositório.
+- `tools/gerar-loja.js` gera as imagens da Play Store (pasta `loja/`, fora do repositório): ícone arco-íris
+  da logo, imagem de destaque e prints do app com legenda, usando filmes, séries e canais de exemplo
+  inventados (a loja não aceita cartazes de terceiros).
