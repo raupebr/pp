@@ -19,7 +19,7 @@ O PP é um app de código aberto publicado por <strong>raupebr</strong>. Contato
 <h2>Resumo</h2>
 <ul>
 <li>O PP não tem servidores próprios: o desenvolvedor do PP <strong>não recebe nem guarda</strong> nenhum dado seu.</li>
-<li>O PP não tem anúncios nem ferramentas próprias de análise ou rastreamento. Se você entrar com uma conta, o Stremio registra alguns eventos de uso (veja abaixo).</li>
+<li>O PP não tem anúncios nem ferramentas próprias de análise ou rastreamento, e bloqueia no aparelho o envio dos eventos de uso do núcleo do Stremio (veja abaixo).</li>
 <li>Você pode usar o PP sem conta (como convidado). Nesse caso, tudo fica salvo só no seu aparelho.</li>
 <li>Se você entrar com uma conta, ela é uma conta Stremio, e os dados dela ficam com o Stremio (detalhes abaixo).</li>
 </ul>
@@ -35,18 +35,23 @@ entra, cria uma conta ou usa “Entrar com Facebook” ou “Entrar com Apple”
 <ul>
 <li>seu e-mail e sua senha (ou o login do Facebook/Apple);</li>
 <li>seus addons, sua biblioteca, o progresso do que você assiste e suas configurações, para sincronizar entre aparelhos;</li>
-<li>informações de uso do app ligadas à sua conta: quando você entra, cria a conta ou sai; os títulos que você adiciona ou tira da biblioteca; os addons que você instala ou remove; e quando você começa, para ou termina uma reprodução. Cada registro leva a versão do app, o idioma e um código de instalação gerado no seu aparelho.</li>
 </ul>
 <p>Esses dados são guardados e tratados pelo Stremio, segundo a
 <a href="https://www.stremio.com/privacy">política de privacidade do Stremio</a> e os
 <a href="https://www.stremio.com/tos">termos do Stremio</a>. O desenvolvedor do PP não tem acesso a eles.
 A conexão com o Stremio é criptografada (HTTPS).</p>
 
+<h2>Eventos de uso</h2>
+<p>O núcleo do Stremio que o PP usa tem um recurso de eventos de uso. Quando há conta, ele poderia enviar ao Stremio: quando você entra, cria a conta ou sai; os títulos que você adiciona ou tira da biblioteca; os addons que você instala ou remove; e quando você começa, para ou termina uma reprodução. Cada registro levaria a versão do app, o idioma e um código de instalação gerado no seu aparelho. <strong>O PP bloqueia esse envio no próprio aparelho</strong> (a partir da versão 1.0.1). Se por algum motivo o bloqueio falhar, esses são os dados que o Stremio pode receber, ligados à sua conta. Como convidado, nada disso existe.</p>
+
 <h2>Addons</h2>
 <p>O PP não fornece filmes, séries ou canais. O que aparece vem dos addons que você instala. Para mostrar catálogos,
 detalhes e opções de reprodução, o app faz pedidos diretamente aos servidores desses addons, informando o título
 pedido; como em qualquer acesso à internet, esses servidores também recebem o seu endereço IP. Cada addon é de
 responsabilidade de quem o publica e tem regras próprias.</p>
+
+<h2>Chromecast</h2>
+<p>Para você poder transmitir para a TV, o PP carrega um componente do Google (de <code>www.gstatic.com</code>) quando abre. Como em qualquer acesso à internet, o Google recebe o seu endereço IP. O PP não envia a ele nenhum outro dado.</p>
 
 <h2>Servidor de streaming</h2>
 <p>Se você configurar um servidor de streaming (por exemplo, no seu computador), o PP se comunica com o endereço que
@@ -68,6 +73,9 @@ você informou.</p>
 <p>Pela Lei Geral de Proteção de Dados (LGPD), você pode pedir acesso, correção ou exclusão dos seus dados. Os dados
 da conta ficam com o Stremio, então esses pedidos devem ser feitos a ele. Dúvidas sobre o PP:
 <a href="mailto:ppsuporte14@gmail.com">ppsuporte14@gmail.com</a>.</p>
+
+<h2>Direitos autorais</h2>
+<p>Veja a página de <a href="direitos-autorais.html">direitos autorais</a>.</p>
 
 <h2>Mudanças nesta política</h2>
 <p>Quando esta política mudar, a nova versão será publicada nesta página, com a data atualizada.</p>

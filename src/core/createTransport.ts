@@ -24,8 +24,10 @@ const createTransport = (): CoreTransport => {
         return bridge.call(['decodeStream'], [stream]);
     };
 
-    const analytics = (event: object): Promise<void> => {
-        return bridge.call(['analytics'], [event, location.hash]);
+    // PP: os eventos de uso da interface (tela aberta, link compartilhado, stream escolhida) não são mais enviados.
+    // Só os eventos que o próprio núcleo do Stremio gera, e só quando há conta, ainda seguem para o Stremio.
+    const analytics = (): Promise<void> => {
+        return Promise.resolve();
     };
 
     return {

@@ -118,3 +118,18 @@ Nos arquivos de código, os trechos alterados estão marcados com comentários `
 - `tools/gerar-loja.js` gera as imagens da Play Store (pasta `loja/`, fora do repositório): ícone arco-íris
   da logo, imagem de destaque e prints do app com legenda, usando filmes, séries e canais de exemplo
   inventados (a loja não aceita cartazes de terceiros).
+
+## 24/10/2026: idade mínima, menos telemetria e páginas públicas (versão 1.0.1)
+
+- O PP é só para maiores de 18 anos. A tela de entrar pede a data de nascimento (DD/MM/AAAA) para criar
+  conta, entrar com e-mail, Facebook ou Apple e entrar como convidado (`src/routes/Intro/Intro.js`,
+  `src/common/ppAge.js`). A data só é conferida: não é guardada nem enviada. O aparelho lembra só que a
+  idade foi confirmada. Se a data indicar menos de 18 anos, a 1ª vez só avisa (a pessoa pode ter errado);
+  a 2ª bloqueia a entrada por 24 horas. Textos em `src/common/ppTranslations.js`; testes em `tests/ppAge.spec.js`.
+- Os eventos de uso da interface (tela aberta, link compartilhado, stream escolhida) deixaram de ser enviados
+  (`src/core/createTransport.ts`).
+- O worker do núcleo passa por `src/ppWorker.js` (entrada `worker` do `webpack.config.js`), que responde "ok"
+  ao pedido de eventos de uso do núcleo (`POST api.strem.io/api/events`) sem enviá-lo. Os demais pedidos
+  passam sem mudança (`src/common/ppAnalyticsBlock.js`, `tests/ppAnalyticsBlock.spec.js`).
+- Páginas públicas em `docs/` (GitHub Pages): política de privacidade, como excluir a conta e direitos autorais.
+- Versão do app: 1.0.1 (`package.json`; versionCode 10001).

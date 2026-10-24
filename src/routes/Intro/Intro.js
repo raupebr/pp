@@ -18,6 +18,7 @@ const { default: useAppleLogin } = require('./useAppleLogin');
 
 const { default: PPLogo } = require('stremio/components/PPLogo');
 const { setGuest } = require('stremio/common/ppGuest');
+const { maskBirthDate, checkBirthDate, isAgeBlocked, isAgeConfirmed, registerUnderage, confirmAge } = require('stremio/common/ppAge');
 const IntroBackground = require('./IntroBackground');
 const styles = require('./styles');
 
@@ -50,6 +51,13 @@ const LOCK_ICON = (
     </FieldIcon>
 );
 
+const CALENDAR_ICON = (
+    <FieldIcon>
+        <rect x={3.5} y={5} width={17} height={15} rx={3.5} />
+        <path d={'M3.5 10h17M8 3v4M16 3v4'} />
+    </FieldIcon>
+);
+
 const SHIELD_ICON = (
     <FieldIcon>
         <path d={'M12 3.5 5 6.2v5.3c0 4.3 2.9 7.6 7 9 4.1-1.4 7-4.7 7-9V6.2Z'} />
@@ -78,6 +86,7 @@ const Intro = () => {
     const emailRef = React.useRef(null);
     const passwordRef = React.useRef(null);
     const confirmPasswordRef = React.useRef(null);
+    const birthDateRef = React.useRef(null);
     const termsRef = React.useRef(null);
     const privacyPolicyRef = React.useRef(null);
     const marketingRef = React.useRef(null);
@@ -94,6 +103,8 @@ const Intro = () => {
                             email: '',
                             password: '',
                             confirmPassword: '',
+                            // PP: a data de nascimento não se perde ao trocar de aba
+                            birthDate: state.birthDate,
                             termsAccepted: false,
                             privacyPolicyAccepted: false,
                             marketingAccepted: false,
@@ -128,13 +139,49 @@ const Intro = () => {
             email: '',
             password: '',
             confirmPassword: '',
+            birthDate: '',
             termsAccepted: false,
             privacyPolicyAccepted: false,
             marketingAccepted: false,
-            error: ''
+            // PP: quem já foi bloqueado por idade neste aparelho continua bloqueado
+            error: isAgeBlocked() ? t('PP_AGE_BLOCKED') : ''
         }
     );
+    // PP: o PP é só para maiores de 18 anos. Vale para toda forma de entrar (conta, Facebook, Apple e convidado).
+    // A data de nascimento só é conferida aqui: não é guardada nem enviada. O aparelho lembra só o resultado.
+    const [ageStatus, setAgeStatus] = React.useState(() => isAgeBlocked() ? 'blocked' : isAgeConfirmed() ? 'confirmed' : 'unknown');
+    const checkAge = React.useCallback(() => {
+        if (ageStatus === 'confirmed') {
+            return true;
+        }
+        if (ageStatus === 'unknown') {
+            const result = checkBirthDate(state.birthDate);
+            if (result === 'ok') {
+                confirmAge();
+                setAgeStatus('confirmed');
+                return true;
+            }
+            if (result === 'invalid') {
+                dispatch({ type: 'error', error: t('PP_AGE_INVALID') });
+                birthDateRef.current?.focus();
+                return false;
+            }
+            // PP: a pessoa pode ter errado a data. Na 1ª vez só avisa e deixa corrigir; na 2ª bloqueia por 24 horas
+            if (registerUnderage() === 'warned') {
+                dispatch({ type: 'error', error: t('PP_AGE_UNDERAGE_WARNING') });
+                birthDateRef.current?.focus();
+                return false;
+            }
+            setAgeStatus('blocked');
+            dispatch({ type: 'change-credentials', name: 'birthDate', value: '' });
+        }
+        dispatch({ type: 'error', error: t('PP_AGE_BLOCKED') });
+        return false;
+    }, [ageStatus, state.birthDate, t]);
     const loginWithFacebook = React.useCallback(() => {
+        if (!checkAge()) {
+            return;
+        }
         openLoaderModal();
         startFacebookLogin()
             .then(({ email, password }) => {
@@ -155,8 +202,11 @@ const Intro = () => {
                 closeLoaderModal();
                 dispatch({ type: 'error', error: error.message });
             });
-    }, [startFacebookLogin, openLoaderModal, closeLoaderModal]);
+    }, [checkAge, startFacebookLogin, openLoaderModal, closeLoaderModal]);
     const loginWithApple = React.useCallback(() => {
+        if (!checkAge()) {
+            return;
+        }
         openLoaderModal();
         startAppleLogin()
             .then(({ token, sub, email, name }) => {
@@ -178,7 +228,7 @@ const Intro = () => {
                 closeLoaderModal();
                 dispatch({ type: 'error', error: error.message });
             });
-    }, [startAppleLogin, openLoaderModal, closeLoaderModal]);
+    }, [checkAge, startAppleLogin, openLoaderModal, closeLoaderModal]);
     const cancelSocialLogin = React.useCallback(() => {
         stopFacebookLogin();
         stopAppleLogin();
@@ -193,6 +243,9 @@ const Intro = () => {
             dispatch({ type: 'error', error: t('INVALID_PASSWORD') });
             return;
         }
+        if (!checkAge()) {
+            return;
+        }
         openLoaderModal();
         core.transport.dispatch({
             action: 'Ctx',
@@ -205,7 +258,7 @@ const Intro = () => {
                 }
             }
         });
-    }, [state.email, state.password]);
+    }, [state.email, state.password, checkAge]);
     const loginAsGuest = React.useCallback(() => {
         // PP: o botão de convidado aparece nas duas abas; os termos ficam na aba "Criar conta"
         if (state.form === LOGIN_FORM) {
@@ -217,10 +270,13 @@ const Intro = () => {
             dispatch({ type: 'error', error: t('MUST_ACCEPT_TERMS') });
             return;
         }
+        if (!checkAge()) {
+            return;
+        }
         // PP: lembra a escolha para a tela de entrar não aparecer de novo
         setGuest(true);
         navigate('/');
-    }, [state.form, state.termsAccepted, setQueryParams]);
+    }, [state.form, state.termsAccepted, setQueryParams, checkAge]);
     const signup = React.useCallback(() => {
         if (typeof state.email !== 'string' || state.email.length === 0 || !emailRef.current.validity.valid) {
             dispatch({ type: 'error', error: t('INVALID_EMAIL') });
@@ -242,6 +298,9 @@ const Intro = () => {
             dispatch({ type: 'error', error: t('MUST_ACCEPT_PRIVACY_POLICY') });
             return;
         }
+        if (!checkAge()) {
+            return;
+        }
         openLoaderModal();
         core.transport.dispatch({
             action: 'Ctx',
@@ -260,7 +319,7 @@ const Intro = () => {
                 }
             }
         });
-    }, [state.email, state.password, state.confirmPassword, state.termsAccepted, state.privacyPolicyAccepted, state.marketingAccepted]);
+    }, [state.email, state.password, state.confirmPassword, state.termsAccepted, state.privacyPolicyAccepted, state.marketingAccepted, checkAge]);
     const emailOnChange = React.useCallback((event) => {
         dispatch({
             type: 'change-credentials',
@@ -293,8 +352,42 @@ const Intro = () => {
         });
     }, []);
     const confirmPasswordOnSubmit = React.useCallback(() => {
-        termsRef.current.focus();
+        (birthDateRef.current ?? termsRef.current).focus();
     }, []);
+    const birthDateOnChange = React.useCallback((event) => {
+        dispatch({
+            type: 'change-credentials',
+            name: 'birthDate',
+            value: maskBirthDate(event.currentTarget.value)
+        });
+    }, []);
+    const birthDateOnSubmit = React.useCallback(() => {
+        if (state.form === SIGNUP_FORM) {
+            termsRef.current.focus();
+        } else {
+            loginWithEmail();
+        }
+    }, [state.form, loginWithEmail]);
+    // PP: o campo some depois que a idade é confirmada neste aparelho
+    const birthDateField = ageStatus === 'unknown' ?
+        <div className={styles['field']}>
+            {CALENDAR_ICON}
+            <CredentialsTextInput
+                ref={birthDateRef}
+                className={styles['credentials-text-input']}
+                type={'text'}
+                inputMode={'numeric'}
+                maxLength={10}
+                placeholder={' '}
+                aria-label={t('PP_AGE_BIRTHDATE')}
+                value={state.birthDate}
+                onChange={birthDateOnChange}
+                onSubmit={birthDateOnSubmit}
+            />
+            <div className={styles['field-label']}>{t('PP_AGE_BIRTHDATE')}</div>
+        </div>
+        :
+        null;
     const toggleTermsAccepted = React.useCallback(() => {
         dispatch({ type: 'toggle-checkbox', name: 'termsAccepted' });
     }, []);
@@ -477,6 +570,7 @@ const Intro = () => {
                                     <Icon className={styles['icon']} name={passwordVisible ? 'eye-off' : 'eye'} />
                                 </Button>
                             </div>
+                            {state.form === LOGIN_FORM ? birthDateField : null}
                             {
                                 state.form === SIGNUP_FORM ?
                                     <div key={SIGNUP_FORM} className={styles['form-extra']}>
@@ -494,6 +588,7 @@ const Intro = () => {
                                             />
                                             <div className={styles['field-label']}>{t('PASSWORD_CONFIRM')}</div>
                                         </div>
+                                        {birthDateField}
                                         <div className={styles['consents-container']}>
                                             <Checkbox
                                                 ref={termsRef}

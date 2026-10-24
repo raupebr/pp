@@ -39,7 +39,8 @@ module.exports = (env, argv) => ({
     devtool: argv.mode === 'production' ? 'source-map' : 'eval-source-map',
     entry: {
         main: './src/index.js',
-        worker: './node_modules/@stremio/stremio-core-web/worker.js'
+        // PP: o worker do núcleo passa antes por src/ppWorker.js, que bloqueia o envio dos eventos de uso
+        worker: './src/ppWorker.js'
     },
     output: {
         path: path.join(__dirname, 'build'),
