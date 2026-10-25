@@ -1018,6 +1018,23 @@
 }
 
 // Quem pediu menos movimento no aparelho vê a tela sem animações
+// PP: em telas de toque o cartão fica sem desfoque e a luz da borda fica parada (veja também o fundo em
+// IntroBackground). No Android, o desfoque refeito a cada quadro sobre o fundo em movimento fazia o cartão piscar.
+// A cor do cartão fica mais firme, para o texto continuar legível sem o desfoque.
+@media (hover: none) {
+    .intro-container {
+        .content-container {
+            -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+            background-color: ~"hsla(var(--pp-h), calc(var(--pp-s) * 32%), 9%, 0.94)";
+
+            .card-border::before {
+                animation: none;
+            }
+        }
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .intro-container, .loading-modal-container {
         *, *::before, *::after {

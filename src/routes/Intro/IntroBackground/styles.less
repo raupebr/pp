@@ -216,6 +216,38 @@
     }
 }
 
+// PP: em telas de toque (celular, tablet, TV) o fundo fica mais leve. No Android, a parede em 3D, a camada de
+// granulado (que mistura as cores de tudo o que está embaixo) e muitas colunas animadas passavam da memória de
+// vídeo, e o cartão ou a tela inteira sumiam por um instante. O movimento continua, só que em 2D.
+@media (hover: none) {
+    .intro-background {
+        .wall {
+            transform: translateX(-50%) rotateZ(-12deg);
+            animation-name: wall-in-flat;
+        }
+
+        .grain {
+            display: none;
+        }
+    }
+}
+
+// No celular, 7 colunas já cobrem a tela inclinada; as outras ficariam fora dela
+@media (hover: none) and (max-width: @xsmall) {
+    .intro-background {
+        .column:nth-child(n+8) {
+            display: none;
+        }
+    }
+}
+
+@keyframes wall-in-flat {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) rotateZ(-12deg) scale(1.15);
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .intro-background {
         .orb, .wall, .column, .particle {

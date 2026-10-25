@@ -135,3 +135,10 @@ Nos arquivos de código, os trechos alterados estão marcados com comentários `
 - Versão do app: 1.0.1 (`package.json`; versionCode 10001).
 - `tools/exportar-certificado.js` (`node tools/exportar-certificado.js`) exporta o certificado público da chave de
   envio (`upload_certificate.pem`), que a Play Console pede para redefinir a chave de envio.
+
+## 25/10/2026: tela de entrar mais leve em telas de toque (versão 1.0.1)
+
+- No celular, a tela de entrar às vezes piscava, e o cartão ou a tela inteira sumiam por um instante. Em telas de
+  toque (`@media (hover: none)`), o fundo animado fica em 2D, sem a camada de granulado e com 7 colunas no celular
+  (`src/routes/Intro/IntroBackground/styles.less`), e o cartão fica sem desfoque, com cor mais firme e a luz da
+  borda parada (`src/routes/Intro/styles.less`). No computador, nada muda.
