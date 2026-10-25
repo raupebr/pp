@@ -133,3 +133,5 @@ Nos arquivos de código, os trechos alterados estão marcados com comentários `
   passam sem mudança (`src/common/ppAnalyticsBlock.js`, `tests/ppAnalyticsBlock.spec.js`).
 - Páginas públicas em `docs/` (GitHub Pages): política de privacidade, como excluir a conta e direitos autorais.
 - Versão do app: 1.0.1 (`package.json`; versionCode 10001).
+- `tools/exportar-certificado.js` (`node tools/exportar-certificado.js`) exporta o certificado público da chave de
+  envio (`upload_certificate.pem`), que a Play Console pede para redefinir a chave de envio.
