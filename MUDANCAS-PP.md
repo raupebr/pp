@@ -142,3 +142,6 @@ Nos arquivos de código, os trechos alterados estão marcados com comentários `
   toque (`@media (hover: none)`), o fundo animado fica em 2D, sem a camada de granulado e com 7 colunas no celular
   (`src/routes/Intro/IntroBackground/styles.less`), e o cartão fica sem desfoque, com cor mais firme e a luz da
   borda parada (`src/routes/Intro/styles.less`). No computador, nada muda.
+- O logo da tela de entrar tinha o topo cortado quando flutuava para cima, e o brilho atrás dele saía quadrado: o
+  reset do app põe `overflow: hidden` em tudo. A caixa de títulos e a do logo agora deixam o conteúdo aparecer
+  (`src/routes/Intro/styles.less`).

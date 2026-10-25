@@ -53,6 +53,9 @@
         flex-direction: column;
         align-items: flex-start;
         min-width: 0;
+        // PP: o reset do app põe overflow: hidden em tudo. Aqui isso cortava o topo do logo quando ele
+        // flutua para cima e deixava o brilho atrás dele quadrado em vez de redondo.
+        overflow: visible;
 
         .logo-container {
             position: relative;
@@ -60,6 +63,7 @@
             width: 6.5rem;
             height: 6.5rem;
             margin-bottom: 2.25rem;
+            overflow: visible;
 
             // Brilho que "respira" atrás da logo
             .logo-glow {
@@ -1017,7 +1021,6 @@
     }
 }
 
-// Quem pediu menos movimento no aparelho vê a tela sem animações
 // PP: em telas de toque o cartão fica sem desfoque e a luz da borda fica parada (veja também o fundo em
 // IntroBackground). No Android, o desfoque refeito a cada quadro sobre o fundo em movimento fazia o cartão piscar.
 // A cor do cartão fica mais firme, para o texto continuar legível sem o desfoque.
@@ -1035,6 +1038,7 @@
     }
 }
 
+// Quem pediu menos movimento no aparelho vê a tela sem animações
 @media (prefers-reduced-motion: reduce) {
     .intro-container, .loading-modal-container {
         *, *::before, *::after {
